@@ -24,3 +24,9 @@
 # Other
 *.bak
 *_test
+
+# path for build
+target/
+
+# path introduced by nix
+.direnv/
