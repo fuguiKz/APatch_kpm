@@ -27,18 +27,20 @@
             pname = folder;
             version = "1.0";
 
-            src = self + "/" + folder;
+            src = builtins.path {
+              path = self;
+            };
 
-            buildInputs = [pkgs.llvm pkgs.clang pkgs.makeWrapper];
+            buildInputs = [pkgs.llvm pkgs.clang pkgs.git pkgs.makeWrapper];
 
             buildPhase = ''
               set -e
-              make -C ${src}
+              mkdir -p $out/kpm_packages/${folder}
+              cd $out/kpm_packages/${folder}
+              make -C ${src}/${folder}
             '';
 
             installPhase = ''
-              mkdir -p $out/kpm_packages/${folder}
-              find . -name "*.kpm" -exec mv {} $out/kpm_packages/${folder} \;
             '';
 
             meta = {
@@ -70,9 +72,9 @@
 
       # Development shell with LLVM and tools
       devShell = pkgs.mkShell {
-        buildInputs = [pkgs.llvm pkgs.clang pkgs.makeWrapper pkgs.git pkgs.cmake pkgs.gcc];
+        buildInputs = [pkgs.llvm pkgs.clang pkgs.git pkgs.makeWrapper];
         shellHook = ''
-          echo "Welcome to the KPM DevShell! LLVM, Clang, GCC, and build tools are available."
+          echo "Welcome to the KPM DevShell! LLVM, Clang, and build tools are available."
         '';
       };
     in {
