@@ -12,7 +12,12 @@
     flake-utils,
   }:
     flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = import nixpkgs {inherit system;};
+      pkgs = import nixpkgs {
+        localSystem = system;
+        crossSystem = {
+          config = "aarch64-unknown-linux-gnu";
+        };
+      };
 
       # List directories excluding "KernelPatch" and ensuring they have a Makefile
       listKpmDirs =
@@ -31,7 +36,7 @@
               path = self;
             };
 
-            buildInputs = [pkgs.llvm pkgs.clang pkgs.git pkgs.makeWrapper];
+            buildInputs = [pkgs.llvm pkgs.clang pkgs.git];
 
             buildPhase = ''
               set -e
@@ -72,7 +77,7 @@
 
       # Development shell with LLVM and tools
       devShell = pkgs.mkShell {
-        buildInputs = [pkgs.llvm pkgs.clang pkgs.git pkgs.makeWrapper];
+        buildInputs = [pkgs.llvm pkgs.clang pkgs.git];
         shellHook = ''
           echo "Welcome to the KPM DevShell! LLVM, Clang, and build tools are available."
         '';
