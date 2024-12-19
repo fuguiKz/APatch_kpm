@@ -28,24 +28,35 @@
       # Generate individual KPM module packages
       modulePackages = builtins.listToAttrs (builtins.map (folder: {
           name = folder;
-          value = pkgs.stdenv.mkDerivation rec {
+          value = pkgs.stdenvNoCC.mkDerivation rec {
             pname = folder;
             version = "1.0";
 
-            src = builtins.path {
-              path = self;
+            #src = builtins.path {
+            #  path = self;
+            #};
+
+            src = pkgs.fetchFromGitHub {
+              owner = "AndroidAppsUsedByMyself";
+              repo = "APatch_kpm";
+              rev = "05510c532bf9dd05c6b6612a8fb9be570980bde0";
+              fetchSubmodules = true;
+              hash = "sha256-IkFT80/vxKMxMU6qTSPLmJ1jGqVej2lpQaOCws/5AQo=";
             };
 
             buildInputs = [pkgs.llvm pkgs.clang pkgs.git];
 
             buildPhase = ''
               set -e
-              mkdir -p $out/kpm_packages/${folder}
-              cd $out/kpm_packages/${folder}
-              make -C ${src}/${folder}
+              mkdir -vp $out/kpm_packages/${folder}
+              cp -r ${src} $out/src
+              cd $out/src/${folder}
+              chmod -R u+w .
+              make -C $out/src/${folder}
             '';
 
             installPhase = ''
+              find "$out/src/${folder}" -name "*.kpm" -exec sh -c 'echo "Copying file: {}" && cp {} "$out/kpm_packages/${folder}"' \;
             '';
 
             meta = {
