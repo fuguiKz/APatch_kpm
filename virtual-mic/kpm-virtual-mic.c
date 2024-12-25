@@ -1,6 +1,6 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
-#include <linux/slab.h>
+//#include <linux/slab.h> // 移除
 #include <linux/string.h>
 #include <linux/time.h>
 #include <linux/delay.h>
@@ -122,11 +122,11 @@ static struct snd_pcm_ops original_ops;
       return frames;
    }
 
-int my_virtual_mic_init(const char *args)
-{
+   static int my_virtual_mic_init(const char *args)
+   {
 	pr_info("kpm-virtual-mic init, args: %s\n", args);
 
-    custom_audio_data = kmalloc(AUDIO_DATA_SIZE, GFP_KERNEL);
+    custom_audio_data = vmalloc(AUDIO_DATA_SIZE);
     if (!custom_audio_data) {
         pr_err("Failed to allocate memory for custom audio data.\n");
         return -ENOMEM;
@@ -146,13 +146,13 @@ int my_virtual_mic_init(const char *args)
     original_snd_pcm_set_ops = (void *)kallsyms_lookup_name("snd_pcm_set_ops");
     if (!original_snd_pcm_set_ops) {
       pr_err("Failed to find snd_pcm_set_ops\n");
-        kfree(custom_audio_data);
+        vfree(custom_audio_data);
         return -EINVAL;
     }
     hook_err_t err = inline_hook_wrap((snd_pcm_set_ops_func_t)original_snd_pcm_set_ops, my_snd_pcm_set_ops, NULL);
     if (err){
       pr_err("Failed to hook snd_pcm_set_ops, error: %d\n", err);
-        kfree(custom_audio_data);
+        vfree(custom_audio_data);
         return err;
     }
     pr_info("Hooked snd_pcm_set_ops successfully.\n");
@@ -161,14 +161,14 @@ int my_virtual_mic_init(const char *args)
    original_snd_pcm_lib_read = (void *)kallsyms_lookup_name("snd_pcm_lib_read");
     if (!original_snd_pcm_lib_read) {
         pr_err("Failed to find snd_pcm_lib_read\n");
-        kfree(custom_audio_data);
+        vfree(custom_audio_data);
         return -EINVAL;
     }
 
    err = inline_hook_wrap((snd_pcm_lib_read_func_t)original_snd_pcm_lib_read, my_snd_pcm_lib_read, NULL);
     if (err){
         pr_err("Failed to hook snd_pcm_lib_read, error: %d\n", err);
-       kfree(custom_audio_data);
+       vfree(custom_audio_data);
         return err;
     }
    pr_info("Hooked snd_pcm_lib_read successfully.\n");
@@ -188,7 +188,7 @@ void my_virtual_mic_exit()
         pr_info("Unhooked snd_pcm_lib_read successfully.\n");
     }
     if (custom_audio_data) {
-        kfree(custom_audio_data);
+        vfree(custom_audio_data);
         pr_info("Freed custom audio data.\n");
     }
 }
