@@ -25,7 +25,7 @@ CFLAGS = -Wall -O2 -fno-PIC -fno-asynchronous-unwind-tables -fno-stack-protector
 
 INCLUDE_DIRS := . include patch/include linux/include linux/arch/arm64/include linux/tools/arch/arm64/include linux/include/generated
 
-INCLUDE_FLAGS := $(foreach dir,$(INCLUDE_DIRS),-I$(KP_DIR)/kernel/$(dir))
+INCLUDE_FLAGS := -I$(KP_DIR)/kernel/include -I$(KP_DIR)/kernel/patch/include -I$(KP_DIR)/kernel/linux/include -I$(KP_DIR)/kernel/linux/arch/arm64/include -I$(KP_DIR)/kernel/linux/tools/arch/arm64/include -I$(KP_DIR)/kernel/linux/include/generated
 
 obj-m := kpm-virtual-mic.o
 kpm-virtual-mic-objs := kpm-virtual-mic.o
