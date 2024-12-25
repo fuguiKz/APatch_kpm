@@ -23,13 +23,13 @@ endif
 
 CFLAGS = -Wall -O2 -fno-PIC -fno-asynchronous-unwind-tables -fno-stack-protector -fno-common -DMYKPM_VERSION=\"$(MYKPM_VERSION)$(MYKPM_VER)\"
 
-INCLUDE_DIRS := . include patch/include linux/include linux/arch/arm64/include linux/tools/arch/arm64/include
+INCLUDE_DIRS := . include patch/include linux/include linux/arch/arm64/include linux/tools/arch/arm64/include linux/include/generated
 
 INCLUDE_FLAGS := $(foreach dir,$(INCLUDE_DIRS),-I$(KP_DIR)/kernel/$(dir))
 
 obj-m := kpm-virtual-mic.o
 kpm-virtual-mic-objs := kpm-virtual-mic.o
-objs := kpm-virtual-mic.o
+objs := kpm-virtual-mic.c
 
 all: base
 
