@@ -3,4 +3,4 @@
 	url = https://github.com/bmax121/KernelPatch/
 [submodule "kernel_src"]
 	path = kernel_src
-	url = https://github.com/Pzqqt/android_kernel_xiaomi_marble/tree/melt-rebase
+	url = https://github.com/Pzqqt/android_kernel_xiaomi_marble/
