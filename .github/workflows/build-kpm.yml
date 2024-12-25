@@ -40,11 +40,14 @@ jobs:
       - name: Build kpm
         run: |
           mkdir target
-
+    
           for dir in $(ls -d */ | grep -v '^KernelPatch/$\|^target/$'); do
-            make -C ${dir}
-            mv ${dir}*.kpm target
+            if [ "$dir" = "virtual-mic/" ]; then
+              make -C ${dir}
+              mv ${dir}*.kpm target
+            fi
           done
+
 
       - name: Upload artifact
         if: success()
