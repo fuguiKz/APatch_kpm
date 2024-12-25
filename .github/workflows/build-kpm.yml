@@ -42,7 +42,7 @@ jobs:
           mkdir target
     
           for dir in $(ls -d */ | grep -v '^KernelPatch/$\|^target/$'); do
-            if [ "$dir" = "virtual-mic/" ]; then
+            if [ "$dir" = "cgroupv2_freeze/" ]; then
               make -C ${dir}
               mv ${dir}*.kpm target
             fi
