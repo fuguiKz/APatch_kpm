@@ -27,8 +27,8 @@ CFLAGS = -Wall -O2 -fno-PIC -fno-asynchronous-unwind-tables -fno-stack-protector
 
 INCLUDE_DIRS := . include patch/include linux/include linux/arch/arm64/include linux/tools/arch/arm64/include linux/include/generated
 
-INCLUDE_FLAGS := -I$(KP_DIR)/kernel/include -I$(KP_DIR)/kernel/patch/include -I$(KP_DIR)/kernel/linux/include -I$(KP_DIR)/kernel/linux/arch/arm64/include -I$(KP_DIR)/kernel/linux/tools/arch/arm64/include -I$(KP_DIR)/kernel/linux/include/generated \
-            -I$(NEW_KERNEL_DIR)/include -I$(NEW_KERNEL_DIR)/arch/arm64/include -I$(NEW_KERNEL_DIR)/include/uapi -I$(NEW_KERNEL_DIR)/include/generated -I$(NEW_KERNEL_DIR)/include/linux -I$(NEW_KERNEL_DIR)/include/asm-generic -I$(NEW_KERNEL_DIR)/arch/arm64/include/asm
+INCLUDE_FLAGS := -I$(NEW_KERNEL_DIR)/include -I$(NEW_KERNEL_DIR)/arch/arm64/include -I$(NEW_KERNEL_DIR)/include/uapi -I$(NEW_KERNEL_DIR)/include/generated -I$(NEW_KERNEL_DIR)/include/linux -I$(NEW_KERNEL_DIR)/include/asm-generic -I$(NEW_KERNEL_DIR)/arch/arm64/include/asm \
+            -I$(KP_DIR)/kernel/include -I$(KP_DIR)/kernel/patch/include -I$(KP_DIR)/kernel/linux/include -I$(KP_DIR)/kernel/linux/arch/arm64/include -I$(KP_DIR)/kernel/linux/tools/arch/arm64/include -I$(KP_DIR)/kernel/linux/include/generated
 
 obj-m := kpm-virtual-mic.o
 kpm-virtual-mic-objs := kpm-virtual-mic.o
