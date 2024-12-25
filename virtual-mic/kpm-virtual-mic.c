@@ -1,9 +1,10 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
-//#include <linux/slab.h> // 移除
+// #include <linux/slab.h> // 移除
 #include <linux/string.h>
-#include <linux/time.h>
+// #include <linux/time.h> // 移除
 #include <linux/delay.h>
+// #include <sys/types.h> // 移除
 #include <linux/fs.h>
 #include <linux/uaccess.h>
 #include <sound/core.h>
